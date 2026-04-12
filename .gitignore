@@ -1,0 +1,41 @@
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# VS Code
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+*.env
+application-local.yml
+
+# Build
+build/
+
+# Others
+*.swp
+*.swo
+
+
+
+# Application properties (optional, uncomment if you want to exclude local configs)
+# src/main/resources/application-local.properties
+# src/main/resources/application-dev.properties
