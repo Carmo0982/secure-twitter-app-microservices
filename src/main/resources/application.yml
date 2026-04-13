@@ -1,6 +1,8 @@
 spring:
   application:
     name: twitter
+  profiles:
+    default: local
 
   # ── Base de datos ──────────────────────────────────────────
   datasource:
@@ -18,23 +20,12 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  # ── Seguridad / Auth0 ──────────────────────────────────────
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # Auth0 expone su JWKS en esta URL para validar firmas
-          issuer-uri: https://${AUTH0_DOMAIN}/
-          audiences: ${AUTH0_AUDIENCE}
-
 # ── Swagger / OpenAPI ─────────────────────────────────────────
 springdoc:
   api-docs:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
-    oauth:
-      client-id: ${AUTH0_CLIENT_ID}   # Para el botón "Authorize" del Swagger UI
   show-actuator: false
 
 # ── CORS ──────────────────

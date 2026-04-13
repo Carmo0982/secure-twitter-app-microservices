@@ -1,10 +1,12 @@
 package com.twitter.app.exceptions;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestControllerAdvice
+@JsonIgnoreType
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
