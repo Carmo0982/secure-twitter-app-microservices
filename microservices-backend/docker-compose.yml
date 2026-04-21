@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_db_microservices
+    environment:
+      POSTGRES_DB: ${DB_NAME:-twitter_db}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5434:5432" # Mapeo al puerto 5434 para evitar conflictos si ya tienes otra instancia en 5432 o 5433
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - twitter_net
+
+volumes:
+  postgres_data:
+
+networks:
+  twitter_net:
+    driver: bridge
