@@ -1,4 +1,82 @@
-# Twitter App: De Monolito a Microservicios Serverless en AWS
+# Secure Twitter
+### Santiago Carmona Pineda
+### Maria Paula Rodriguez 
+
+## Twitter App: Monolito
+
+La primera versión del proyecto fue implementada como una aplicación monolítica con Spring Boot, concentrando en un solo despliegue la lógica de autenticación, gestión de usuarios, creación de publicaciones y consulta del stream público. Esta etapa sirvió como base funcional antes de la migración a microservicios.
+
+En esta versión inicial, la aplicación resuelve todo el flujo principal de la experiencia tipo Twitter: el usuario inicia sesión con Auth0, obtiene un token JWT, consume la API desde el frontend, publica mensajes cortos y consulta el stream público de publicaciones.
+
+### Objetivo de la versión monolítica
+
+Construir una API REST sencilla y segura para una experiencia tipo Twitter, permitiendo a usuarios autenticados publicar mensajes cortos y consultar un flujo público de publicaciones desde una interfaz web.
+
+### Funcionalidades principales
+
+* Autenticación de usuarios mediante Auth0.
+* Creación de publicaciones con un máximo de 140 caracteres.
+* Consulta del stream público con todas las publicaciones disponibles.
+* Documentación completa de la API con Swagger / OpenAPI.
+* Consumo de la API desde una interfaz frontend web.
+
+
+### 1. Resumen general
+
+La captura principal corresponde al estado funcional del monolito en su primera etapa. Allí se observa una aplicación completa que expone sus endpoints desde una única base de código, centralizando las responsabilidades de backend, seguridad y persistencia. Esta estructura fue útil para validar el comportamiento del sistema antes de dividirlo en servicios independientes.
+
+### 2. Swagger de la API y validación con JWT
+
+La captura de Swagger muestra los endpoints disponibles en la aplicación y sirve como documentación interactiva de la API. Desde esta vista se pueden identificar las operaciones expuestas por el backend, los modelos de solicitud y respuesta, y la forma en que la seguridad se integra mediante JWT.
+
+![Swagger de la app](img/image.png)
+
+En Swagger también se aprecia que la API está protegida con autenticación Bearer. Esto significa que, para ejecutar los endpoints protegidos, el usuario debe iniciar sesión con Auth0, obtener un access token y enviarlo en la cabecera `Authorization`. Con esto se garantiza que solo los usuarios autenticados puedan crear publicaciones o acceder a información privada.
+
+### 3. Twitter API como backend
+
+Twitter API es el backend de la solución monolítica. Corresponde a la aplicación Spring Boot que se ejecuta localmente en `localhost:8080` y actúa como el servidor principal que recibe las requests del frontend.
+
+![Twitter API en OAuth](img/image2.png)
+
+Su responsabilidad es:
+
+* Recibir las peticiones HTTP enviadas por la interfaz web.
+* Validar los JWT emitidos por Auth0.
+* Exponer la lógica de negocio para crear y consultar posts.
+* Persistir la información en PostgreSQL.
+* Servir como punto único de acceso para todas las operaciones de la versión monolítica.
+
+En otras palabras, todo el procesamiento de negocio vive en este backend: la autenticación del token, la validación de los datos del post y el almacenamiento de la información en la base de datos.
+
+### 4. Twitter Frontend 
+
+![Twitter Frontend de OAuth](img/image3.png)
+
+Twitter Frontend es la aplicación React que se ejecuta localmente en `localhost:5173`. Esta parte representa la capa visual con la que el usuario interactúa directamente.
+
+Desde esta interfaz el usuario puede:
+
+* Iniciar sesión y cerrar sesión.
+* Obtener acceso autenticado mediante Auth0.
+* Crear nuevas publicaciones.
+* Visualizar el stream público de posts.
+
+El frontend no contiene la lógica de negocio principal; su función es consumir la API del monolito y presentar la información de forma clara y usable. Por eso, actúa como cliente de Twitter API.
+
+### 5. Integración con Auth0
+
+Tanto Twitter API como Twitter Frontend son aplicaciones registradas en Auth0, aunque cumplen roles distintos dentro del sistema.
+
+Auth0 necesita conocer ambas aplicaciones porque debe distinguir quién solicita los tokens y para qué API se emitirán. En este caso:
+
+* El frontend se registra como una aplicación SPA, ya que es el cliente que inicia el flujo de autenticación.
+* El backend se registra como una API protegida, para que Auth0 emita tokens con el audience correcto y el backend pueda validar esos JWT.
+
+Gracias a esta configuración, Auth0 puede autenticar al usuario, emitir tokens válidos para la API correcta y permitir que el monolito aplique control de acceso sobre sus endpoints protegidos.
+
+
+## Twitter App: De Monolito a Microservicios Serverless en AWS
 
 Este proyecto documenta la modernización de una aplicación web monolítica de Spring Boot a una arquitectura de microservicios completamente serverless, desplegada en Amazon Web Services (AWS). El objetivo principal fue mejorar la escalabilidad, la mantenibilidad y la agilidad del desarrollo descomponiendo el sistema original en servicios más pequeños y autónomos.
 
